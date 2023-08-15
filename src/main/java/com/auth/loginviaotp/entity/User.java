@@ -1,4 +1,4 @@
-package com.dentalstack.auth.demo.entity;
+package com.auth.loginviaotp.entity;
 
 import jakarta.persistence.*;
 import lombok.Data;
@@ -6,13 +6,13 @@ import lombok.Data;
 @Table(name = "user")
 @Entity
 @Data
-public class UserEntity {
+public class User {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id")
     private Long id;
 
-    @Column(name = "number",unique = true)
+    @Column(name = "phone",unique = true)
     private String phoneNumber;
 
 }

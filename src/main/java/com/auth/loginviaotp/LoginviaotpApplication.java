@@ -1,15 +1,13 @@
-package com.dentalstack.auth.demo;
+package com.auth.loginviaotp;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.cache.annotation.EnableCaching;
 
 @SpringBootApplication
-@EnableCaching
-public class DemoApplication {
+public class LoginviaotpApplication {
 
 	public static void main(String[] args) {
-		SpringApplication.run(DemoApplication.class, args);
+		SpringApplication.run(LoginviaotpApplication.class, args);
 	}
 
 }
