@@ -7,10 +7,7 @@ import com.auth.loginviaotp.service.OtpCacheService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.Map;
 import java.util.Optional;
@@ -30,15 +27,10 @@ public class AuthController {
 
 
     @PostMapping("/generate-otp")
-    public ResponseEntity<String> generateOTP(@RequestBody String phoneNumber) {
-        // Call dummy vendor API here to generate OTP
+    public ResponseEntity<String> generateOTP(@RequestBody Map<String, String> requestMap) {
 
-        // For demonstration, let's generate a random OTP
-        String otp = String.format("%06d", new Random().nextInt(999999));
-        otpCacheService.storeOtp(phoneNumber, otp);
-
-        // Store OTP in cache (e.g., using Caffeine Cache)
-        // You'll need to configure cache manager and cache annotations
+        String otp = String.format("%06d", new Random().nextInt(999999)); //Random Otp Generation
+        otpCacheService.storeOtp(requestMap.get("phoneNumber"), otp);
 
         return ResponseEntity.ok("OTP generated: " + otp);
     }
@@ -48,12 +40,14 @@ public class AuthController {
         String phoneNumber = requestMap.get("phoneNumber");
         String otp = requestMap.get("otp");
         String cachedOtp = otpCacheService.retrieveOtp(phoneNumber);
+        System.out.println(cachedOtp);
         Optional<User> userOptional = userRepository.findByPhoneNumber(phoneNumber);
         if(userOptional.isPresent()) {
             //otp validation
             if (cachedOtp != null && cachedOtp.equals(otp)) {
                 String jwtToken = jwtTokenService.generateJwtToken(phoneNumber);
-                otpCacheService.clearOtpCache(phoneNumber);
+                otpCacheService.clearOtpCache(phoneNumber); //Clearing Cache after login
+//                System.out.println(otpCacheService.retrieveOtp(phoneNumber));
                 return ResponseEntity.ok("Logged in successfully! JWT: " + jwtToken);
             } else {
                 return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Invalid OTP");

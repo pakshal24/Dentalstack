@@ -9,8 +9,7 @@ import java.util.Date;
 
 @Service
 public class JwtTokenService {
-
-    @Value("${jwt.secret}")
+    @Value(("${jwt.secret}"))
     private String jwtSecret;
 
     @Value("${jwt.expiration}")
@@ -24,7 +23,7 @@ public class JwtTokenService {
                 .setSubject(phoneNumber)
                 .setIssuedAt(now)
                 .setExpiration(expiryDate)
-                .signWith(SignatureAlgorithm.HS512, jwtSecret)
+                .signWith(SignatureAlgorithm.HS256, jwtSecret)
                 .compact();
     }
 }
