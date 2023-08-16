@@ -21,5 +21,8 @@ second end point : localhost:8081/auth/login
      if user not found
         User not found
      if otp is not correct
-        Invalid otp
+        Invalid otp  
+3 Database Used MySQL
+4. All database properties are in application.properties file
+
    
